@@ -24,3 +24,9 @@ class Group(object):
     @property
     def invite_key(self):
         return self._password
+
+    @property
+    def urgent_schedule(self):
+        if not self._schedules:
+            return "Not Exist Schedule"
+        return self._schedules[0]

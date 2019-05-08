@@ -15,3 +15,7 @@ def test_add_schedule_to_group():
     first_schedule = Schedule("Title", "Discription", datetime.datetime.now())
     sadistix_group.add_schedule(first_schedule)
     assert sadistix_group.schedule_count == 1
+    
+    schedule = sadistix_group.urgent_schedule
+    assert str(schedule).title == "Title"
+
