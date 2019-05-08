@@ -40,7 +40,6 @@ def new_schedule_handler(request, group):
     add_schedule_to_group = composer(lambda group, schedule:
                                      group.add_schedule(schedule)
                                      )(object_group, new_schedule)
-
     result = add_schedule_to_group.attempt() & aduit_flow
     return result
 
