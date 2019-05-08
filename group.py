@@ -1,4 +1,5 @@
 from utils import formating_string
+from lazy.effect import composer
 
 
 class Group(object):
@@ -30,3 +31,8 @@ class Group(object):
         if not self._schedules:
             return "Not Exist Schedule"
         return self._schedules[0]
+
+
+@composer
+def create_group(group_name, invite_key):
+    return Group(group_name, invite_key)
