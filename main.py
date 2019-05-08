@@ -2,13 +2,13 @@ import datetime
 
 from fanic import route, app
 from sanic.response import text
-from lazy.effect import lazy, pure
+from lazy.effect import lazy, pure, composer
 from lazy.ef_app import EfApp
 from lazy.typematcher import _type, chain, TypeMatcher
 from lazy.either import Left, Right
 
 from group import Group, create_group
-from schedule import Schedule
+from schedule import Schedule, create_schedule
 from group_manager import GroupManager
 
 
@@ -17,16 +17,19 @@ def group_handler(request, group):
 
 
 def new_schedule_handler(request, group):
-    request = request.execute
-    try:
-        title = request.raw_args['title']
-        description = request.raw_args['description']
-        new_schedule = Schedule(title, description, datetime.datetime.now())
-        GroupManager().find_group(group.execute).add_schedule(new_schedule)
-        return pure(text("success"))
-    except Exception as e:
-        print(e)
-        return pure(text("failure"))
+    title = request & (lambda x: x.raw_args['title'])
+    description = request & (lambda x: x.raw_args['description'])
+    object_group = group << lazy(lambda x: GroupManager().find_group(x))
+    new_schedule = create_schedule(title, description, pure(datetime.datetime.now()))
+    add_schedule_to_group = composer(lambda group, schedule:
+                                     group.add_schedule(schedule)
+                                     )(object_group, new_schedule).attempt()
+
+    result = add_schedule_to_group & TypeMatcher(
+        _type(Left) < - chain(lambda x: text("success")),
+        _type(Right) < - chain(lambda x: text("failure")),
+    )
+    return result
 
 
 def new_group_handler(request):

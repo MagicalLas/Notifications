@@ -1,5 +1,7 @@
 import json
 
+from lazy.effect import composer
+
 
 class Schedule(object):
     def __init__(self, title, description, date):
@@ -13,3 +15,8 @@ class Schedule(object):
             "desciption": self._desciption
         }
         return json.dumps(json_data)
+
+
+@composer
+def create_schedule(title, description, date):
+    return Schedule(title, description, date)
