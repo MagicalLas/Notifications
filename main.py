@@ -12,36 +12,46 @@ from schedule import Schedule, create_schedule
 from group_manager import GroupManager
 
 
+def get_arg(arg_name):
+    def dummy(request):
+        return request.raw_args[arg_name]
+    return dummy
+
+
+aduit_flow = TypeMatcher(
+    _type(Left) < - chain(lambda x: x.left if x.left else text("success")),
+    _type(Right) < - chain(lambda x: x.right if x.right else text("failure")),
+)
+
+
 def group_handler(request, group):
-    return pure(text(GroupManager().find_group(group.execute).urgent_schedule))
+    flow = group & (lambda x: GroupManager().find_group(x)) & (
+        lambda x: x.urgent_schedule) & (lambda x: text(x))
+    result = flow.attempt() & aduit_flow
+    return result
 
 
 def new_schedule_handler(request, group):
-    title = request & (lambda x: x.raw_args['title'])
-    description = request & (lambda x: x.raw_args['description'])
+    title = request & get_arg('title')
+    description = request & get_arg('description')
     object_group = group << lazy(lambda x: GroupManager().find_group(x))
-    new_schedule = create_schedule(title, description, pure(datetime.datetime.now()))
+    new_schedule = create_schedule(
+        title, description, pure(datetime.datetime.now()))
     add_schedule_to_group = composer(lambda group, schedule:
                                      group.add_schedule(schedule)
-                                     )(object_group, new_schedule).attempt()
+                                     )(object_group, new_schedule)
 
-    result = add_schedule_to_group & TypeMatcher(
-        _type(Left) < - chain(lambda x: text("success")),
-        _type(Right) < - chain(lambda x: text("failure")),
-    )
+    result = add_schedule_to_group.attempt() & aduit_flow
     return result
 
 
 def new_group_handler(request):
-    group_name = request & (lambda x: x.raw_args['group_name'])
-    invite_key = request & (lambda x: x.raw_args['group_invite_key'])
+    group_name = request & get_arg('group_name')
+    invite_key = request & get_arg('group_invite_key')
     new_group = (create_group(group_name, invite_key) &
                  (lambda x: GroupManager().add_new_group(x))
-                 ).attempt()
-    result = new_group & TypeMatcher(
-        _type(Left) < - chain(lambda x: text("success")),
-        _type(Right) < - chain(lambda x: text("failure")),
-    )
+                 )
+    result = new_group.attempt() & aduit_flow
     return result
 
 
