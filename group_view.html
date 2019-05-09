@@ -39,15 +39,35 @@
             width: 30em;
             margin-left: -15em;
         }
-
+        .dark {
+            border: 2px solid rgba(0, 0, 0, 0.9);
+            font-size: 1.75em;
+            padding: .25em .5em .3125em;
+            color: rgba(255, 130, 130, 0.904);
+            border-radius: .25em;
+            background: rgba(129, 101, 250, 0.9);
+            transition: all .100s;
+            position: absolute;
+            box-sizing: border-box;
+            bottom: 4em;
+            left: 50%;
+            width: 30em;
+            margin-left: -15em;
+        }
         .invite_card {
             position: absolute;
             left: 50%;
             top: 20%;
             margin-left: -10rem;
         }
+        .schedule {
+            position: absolute;
+            left: 50%;
+            top: 20%;
+            transform: translateX(-50%);
+        }
 
-        .invite_form {
+        .invite_form, .schedule_form {
             position: absolute;
             left: 50%;
             top: -20%;
@@ -64,6 +84,16 @@
 
             100% {
                 top: 30%;
+            }
+        }
+
+        @keyframes slideOut {
+            0% {
+                top: 30%;
+            }
+
+            100% {
+                top: -20%;
             }
         }
     </style>
@@ -103,6 +133,8 @@
             const url = RENDER_SCHEDULE_API_ENDPOINT + param;
             const req = new XMLHttpRequest();
             req.addEventListener("load", () => {
+                FindClass("invite_card").innerHTML = null;
+                FindClass("invite_form").innerHTML = null;
                 FindClass("schedule").innerHTML = req.responseText;
             });
             req.open("GET", url);
@@ -122,6 +154,48 @@
             element.style.animationFillMode = "forwards";
         }
 
+        function CreateNewScheduleFrom() {
+            const element = FindClass("schedule_form");
+            element.style.animation = "slideIn";
+            element.style.animationDuration = "1s";
+            element.style.animationFillMode = "forwards";
+        }
+        
+        function CloseNewScheduleFrom() {
+            const element = FindClass("schedule_form");
+            element.style.animation = "slideOut";
+            element.style.animationDuration = "1s";
+            element.style.animationFillMode = "forwards";
+        }
+
+        function CheckNewSchedule() {
+            if (event.keyCode == ENTER_KEY_CODE) {
+                CreateNewSchedule();
+            }
+        }
+        function CreateNewSchedule() {
+            title = FindName("title").value;
+            desciption = FindName("description").value;
+
+            if (IsVaildParameter(title, desciption)) {
+
+                const url = "/new/schedule/" + GROUP_NAME + "?title=" + title + "&description=" + desciption;
+                const req = new XMLHttpRequest();
+                req.addEventListener("load", () => {
+                    if (req.responseText == "success") {
+                        CloseNewScheduleFrom();
+                        alert(req.responseText);
+                    } else {
+                        alert(req.responseText);
+                    }
+                });
+                req.open("GET", url);
+                req.send(null);
+            }
+        }
+        function IsVaildParameter(parameter1, parameter2) {
+            return (parameter1 != "") & (parameter2 != "")
+        }
     </script>
 </head>
 
@@ -142,6 +216,10 @@
     </div>
     <div class="schedule">
 
+    </div>
+    <div class="schedule_form">
+        <input class="dark" type="text" placeholder="Title을 입력해주세요" onkeypress="CheckNewSchedule()" name="title">
+        <input class="dark" type="text" style="bottom: -2em" placeholder="Description을 입력해주세요" onkeypress="CheckNewSchedule()" name="description">
     </div>
 </body>
 
