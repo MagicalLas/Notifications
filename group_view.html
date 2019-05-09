@@ -8,7 +8,6 @@
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="stylesheet" href="css/shards.min.css">
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
         crossorigin="anonymous"></script>
@@ -18,8 +17,29 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
-    <script src="js/shards.min.js"></script>
     <style>
+        html,
+        body {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        input {
+            border: 2px solid rgba(0, 0, 0, 0.9);
+            font-size: 1.75em;
+            padding: .25em .5em .3125em;
+            color: rgba(255, 130, 130, 0.904);
+            border-radius: .25em;
+            background: transparent;
+            transition: all .100s;
+            position: absolute;
+            box-sizing: border-box;
+            bottom: 4em;
+            left: 50%;
+            width: 30em;
+            margin-left: -15em;
+        }
+
         .invite_card {
             position: absolute;
             left: 50%;
@@ -51,6 +71,7 @@
         const ENTER_KEY_CODE = 13;
         const GROUP_NAME = location.href.substr(location.href.lastIndexOf('/') + 1);
         const INVITE_KEY_VAILD_CHECK_API_ENDPOINT = "/invite_key/";
+        const RENDER_SCHEDULE_API_ENDPOINT = "/schedule/";
 
         function FindName(name) {
             return document.getElementsByName(name)[0];
@@ -68,10 +89,21 @@
             const url = INVITE_KEY_VAILD_CHECK_API_ENDPOINT + GROUP_NAME + "?invite_key=" + key;
             const req = new XMLHttpRequest();
             req.addEventListener("load", () => {
-                alert(req.responseText);
                 if (req.responseText == "success") {
-                    // Show Schedule
+                    RenderSchedule(GROUP_NAME + "?invite_key=" + key);
+                } else {
+                    alert(req.responseText);
                 }
+            });
+            req.open("GET", url);
+            req.send(null);
+        }
+
+        function RenderSchedule(param) {
+            const url = RENDER_SCHEDULE_API_ENDPOINT + param;
+            const req = new XMLHttpRequest();
+            req.addEventListener("load", () => {
+                FindClass("schedule").innerHTML = req.responseText;
             });
             req.open("GET", url);
             req.send(null);
@@ -107,6 +139,9 @@
     </div>
     <div class="invite_form">
         <input type="text" placeholder="Invite Key를 입력해주세요" onkeypress="JoinGroup()" name="invite_key">
+    </div>
+    <div class="schedule">
+
     </div>
 </body>
 
