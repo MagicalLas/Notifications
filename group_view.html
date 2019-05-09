@@ -26,6 +26,26 @@
             top: 20%;
             margin-left: -10rem;
         }
+
+        .invite_form {
+            position: absolute;
+            left: 50%;
+            top: -20%;
+            animation-fill-mode: forwards;
+            animation-play-state: paused;
+            animation-duration: 2s;
+            animation-name: slideIn;
+        }
+
+        @keyframes slideIn {
+            0% {
+                top: -20%;
+            }
+
+            100% {
+                top: 30%;
+            }
+        }
     </style>
     <script>
         const ENTER_KEY_CODE = 13;
@@ -44,6 +64,13 @@
             return (arg) => f(arg).value;
         }
 
+        function ViewInviteForm() {
+            element = FindClass("invite_form");
+            element.style.animation = "slideIn";
+            element.style.animationDuration = "1s";
+            element.style.animationFillMode = "forwards";
+        }
+
     </script>
 </head>
 
@@ -55,8 +82,11 @@
             <div class="card-body">
                 <h4 class="card-title">Invite</h4>
                 <p class="card-text">Invite Key가 있습니까? 있다면 이 그룹의 일정을 열람가능합니다.</p>
+                <a class="btn btn-primary" onmousedown="ViewInviteForm()">Invite Key입력하기</a>
             </div>
         </div>
+    </div>
+    <div class="invite_form">
     </div>
 </body>
 

@@ -53,6 +53,12 @@ def group_handler(request, group):
     return result
 
 
+def invite_key_handler(request, group):
+    flow = group & (lambda x: GroupManager().find_group(x)) & (
+        lambda x: x.invite_key) & (lambda x: text("success" if x == request.execute.raw_args['invite_key'] else "failure"))
+    return flow & aduit_flow
+
+
 def new_schedule_handler(request, group):
     title = request & get_arg('title')
     description = request & get_arg('description')
@@ -83,6 +89,7 @@ def EffectApp():
     route('/schedule/<group>', group_handler)
     route('/new/schedule/<group>', new_schedule_handler)
     route('/new/group', new_group_handler)
+    route('/invite_key/<group>', invite_key_handler)
     app.run(host="0.0.0.0", port=8000)
     return
 
