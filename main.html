@@ -213,7 +213,7 @@
             if (IsVaildParameter(new_group_name, new_group_invite_key)) {
                 const url = GROUP_CREATE_API_ENDPOINT + "?" + new_group_name + "&" + new_group_invite_key;
                 req.addEventListener("load", () => alert(req.responseText));
-                req.open("GET", GROUP_CREATE_API_ENDPOINT);
+                req.open("GET", url);
                 req.send(null);
             }
             else {
