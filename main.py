@@ -1,7 +1,7 @@
 import datetime
 
 from fanic import route, app
-from sanic.response import text
+from sanic.response import text, html
 from lazy.effect import lazy, pure, composer
 from lazy.ef_app import EfApp
 from lazy.typematcher import _type, chain, TypeMatcher
@@ -23,6 +23,15 @@ aduit_flow = TypeMatcher(
     _type(Right) < - chain(lambda x: x.right if x.right else text("failure")),
 )
 
+f = open("./main.html", 'r')
+lines = f.readlines()
+main_page = ""
+for i in lines:
+    main_page += i
+main_page += ""
+
+def main_page_handler(request):
+    return pure(html(main_page))
 
 def group_handler(request, group):
     flow = group & (lambda x: GroupManager().find_group(x)) & (
@@ -34,7 +43,7 @@ def group_handler(request, group):
 def new_schedule_handler(request, group):
     title = request & get_arg('title')
     description = request & get_arg('description')
-    object_group = group << lazy(lambda x: GroupManager().find_group(x))
+    object_group = group & (lambda x: GroupManager().find_group(x))
     new_schedule = create_schedule(
         title, description, pure(datetime.datetime.now()))
     add_schedule_to_group = composer(lambda group, schedule:
@@ -56,6 +65,7 @@ def new_group_handler(request):
 
 @lazy
 def EffectApp():
+    route('/', main_page_handler)
     route('/notice/<group>', group_handler)
     route('/new/schedule/<group>', new_schedule_handler)
     route('/new/group', new_group_handler)
