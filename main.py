@@ -23,7 +23,7 @@ aduit_flow = TypeMatcher(
     _type(Right) < - chain(lambda x: text("failure")),
 )
 
-f = open("./main.html", 'r')
+f = open("./main.html", 'r', encoding="utf-8")
 lines = f.readlines()
 main_page = ""
 for i in lines:

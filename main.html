@@ -19,8 +19,8 @@
             box-sizing: border-box;
             bottom: 4em;
             left: 50%;
-            width: 11em;
-            margin-left: -5.5em;
+            width: 30em;
+            margin-left: -15em;
         }
 
         button {
@@ -131,7 +131,7 @@
         }
     </style>
     <script>
-        const ENTER_KEY_CODE = 13
+        const ENTER_KEY_CODE = 13;
         const GROUP_CREATE_API_ENDPOINT = "/new/group";
 
         function FindName(name) {
@@ -240,7 +240,7 @@
     </div>
 
     <div class="_pre_input_buttons">
-        <input type="text" placeholder="Group Name" name="group_search" onkeydown="GoToGroupPage()">
+        <input type="text" placeholder="이동하실 Group이름을 입력해주세요" name="group_search" onkeydown="GoToGroupPage()">
         <button onclick="ChangeToNewGroupFormPage()">Create Group</button>
     </div>
 </body>
