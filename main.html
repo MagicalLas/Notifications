@@ -132,6 +132,8 @@
     </style>
     <script>
         const ENTER_KEY_CODE = 13
+        const req = new XMLHttpRequest();
+        const GROUP_CREATE_API_ENDPOINT = "/new/group";
 
         function FindName(name) {
             return document.getElementsByName(name)[0];
@@ -143,6 +145,16 @@
 
         function GetValue(f) {
             return (arg) => f(arg).value;
+        }
+
+        function WrappingInputTagValue(fineElement) {
+            function dummy(arg) {
+                if (fineElement(arg) != "") {
+                    return arg + "=" + fineElement(arg);
+                }
+                return "";
+            }
+            return dummy;
         }
 
         function FormatNameToGroupPageURL(name) {
@@ -172,6 +184,7 @@
             element.style.animationDuration = "1s";
             element.style.animationFillMode = "forwards";
         }
+
         function FormSlideOut(element) {
             element.style.animation = "slideOutForm";
             element.style.animationDuration = "1s";
@@ -188,15 +201,38 @@
             FormSlideOut(FindClass("new_group_form"));
         }
 
+        function CheckFormSendEvent() {
+            if (event.keyCode == ENTER_KEY_CODE) {
+                CreateNewGroup();
+            }
+        }
+
+        function CreateNewGroup() {
+            const new_group_name = WrappingInputTagValue(GetValue(FindName))("group_name");
+            const new_group_invite_key = WrappingInputTagValue(GetValue(FindName))("group_invite_key");
+            if (IsVaildParameter(new_group_name, new_group_invite_key)) {
+                const url = GROUP_CREATE_API_ENDPOINT + "?" + new_group_name + "&" + new_group_invite_key;
+                req.addEventListener("load", () => alert(req.responseText));
+                req.open("GET", GROUP_CREATE_API_ENDPOINT);
+                req.send(null);
+            }
+            else {
+                alert("Blank!");
+            }
+        }
+
+        function IsVaildParameter(group_name, invite_key) {
+            return (group_name != "") & (invite_key != "")
+        }
     </script>
 </head>
 
 <body>
     <div class="new_group_form">
         <input type="text" placeholder="New Group Name" name="group_name" class="group_name"
-            onkeydown="GoToGroupPage()">
+            onkeydown="CheckFormSendEvent()">
         <input type="text" placeholder="Invite Key" name="group_invite_key" class="group_invite_key"
-            onkeydown="GoToGroupPage()">
+            onkeydown="CheckFormSendEvent()">
         <button class="form_close_button" onclick="CloseNewGroupForm()">X</button>
     </div>
 
