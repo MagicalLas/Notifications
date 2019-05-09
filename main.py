@@ -30,14 +30,26 @@ for i in lines:
     main_page += i
 main_page += ""
 
+g = open("./group_view.html", 'r', encoding="utf-8")
+lines = g.readlines()
+group_page = ""
+for i in lines:
+    group_page += i
+group_page += ""
+
+
 def main_page_handler(request):
     return pure(html(main_page))
+
+
+def group_page_handler(request, group):
+    return pure(html(group_page))
+
 
 def group_handler(request, group):
     flow = group & (lambda x: GroupManager().find_group(x)) & (
         lambda x: x.urgent_schedule) & (lambda x: text(x))
     result = flow.attempt() & aduit_flow
-    print(result.execute)
     return result
 
 
@@ -67,7 +79,8 @@ def new_group_handler(request):
 @lazy
 def EffectApp():
     route('/', main_page_handler)
-    route('/notice/<group>', group_handler)
+    route('/notice/<group>', group_page_handler)
+    route('/schedule/<group>', group_handler)
     route('/new/schedule/<group>', new_schedule_handler)
     route('/new/group', new_group_handler)
     app.run(host="0.0.0.0", port=8000)
