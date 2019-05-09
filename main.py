@@ -20,7 +20,7 @@ def get_arg(arg_name):
 
 aduit_flow = TypeMatcher(
     _type(Left) < - chain(lambda x: x.left if x.left else text("success")),
-    _type(Right) < - chain(lambda x: x.right if x.right else text("failure")),
+    _type(Right) < - chain(lambda x: text("failure")),
 )
 
 f = open("./main.html", 'r')
@@ -37,6 +37,7 @@ def group_handler(request, group):
     flow = group & (lambda x: GroupManager().find_group(x)) & (
         lambda x: x.urgent_schedule) & (lambda x: text(x))
     result = flow.attempt() & aduit_flow
+    print(result.execute)
     return result
 
 
