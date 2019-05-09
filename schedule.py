@@ -10,16 +10,8 @@ class Schedule(object):
         self._date = date
 
     @property
-    def redered_html(self):
-        return """
-            <div class="card" style="width: 20rem;">
-            <img class="card-img-top" src="https://github.com/Las-Wonho/Notifications/raw/master/icon.png" alt="Card image cap">
-            <div class="card-body">
-                <h4 class="card-title">{title}</h4>
-                <p class="card-text">{des}</p>
-            </div>
-            </div>
-        """.format(title=self._title, des=self._desciption)
+    def rendered_html(self):
+        return """<div class="card" style="width: 20rem;"><img class="card-img-top" src="https://github.com/Las-Wonho/Notifications/raw/master/icon.png" alt="Card image cap"><div class="card-body"><h4 class="card-title">{title}</h4><p class="card-text">{des}</p></div></div>""".format(title=self._title, des=self._desciption)
 
     def __str__(self):
         json_data = {
