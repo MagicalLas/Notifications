@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <meta name="viewport" content="width=device-width">
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Notifications</title>
+    <style>
+        input {
+            border: 2px solid rgba(255, 255, 255, .5);
+            font-size: 1.75em;
+            padding: .25em .5em .3125em;
+            color: rgba(255, 255, 255, 0.904);
+            border-radius: .25em;
+            background: transparent;
+            transition: all .100s;
+            position: absolute;
+            box-sizing: border-box;
+            bottom: 4em;
+            left: 50%;
+            width: 11em;
+            margin-left: -5.5em;
+        }
+
+        button {
+            border: 2px solid rgba(255, 255, 255, 0.089);
+            font-size: 1.75em;
+            border-radius: .25em;
+            color: rgba(255, 255, 255, 0.698);
+            padding: .25em .5em .3125em;
+            transition: all .100s;
+            background: transparent;
+            position: absolute;
+            bottom: 2em;
+            margin-left: -4em;
+            left: 50%;
+            width: 8em;
+        }
+
+        html {
+            background: #333 url(https://github.com/Las-Wonho/Notifications/raw/master/space.jpg) no-repeat center bottom;
+            background-size: cover;
+        }
+
+        body {
+            box-shadow: inset 0 0 5em #000;
+        }
+
+        html,
+        body {
+            height: 100%;
+            overflow: hidden;
+        }
+    </style>
+</head>
+
+<body>
+    <input type="text" placeholder="Group Name">
+    <button>New Group</button>
+</body>
+
+</html>
