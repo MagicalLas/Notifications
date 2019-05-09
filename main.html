@@ -53,10 +53,35 @@
             overflow: hidden;
         }
     </style>
+    <script>
+        const ENTER_KEY_CODE = 13
+
+        function FindName(name) {
+            return document.getElementsByName(name)[0];
+        }
+        function FindClass(name) {
+            return document.getElementsByClassName(name)[0];
+        }
+
+        function GetValue(f) {
+            return (arg) => f(arg).value;
+        }
+
+        function FormatNameToGroupPageURL(name) {
+            return "./notice/" + name
+        }
+
+        function GoToGroupPage() {
+            if (event.keyCode == ENTER_KEY_CODE) {
+                location.href = FormatNameToGroupPageURL(GetValue(FindName)("group_search"));
+            }
+        }
+
+    </script>
 </head>
 
 <body>
-    <input type="text" placeholder="Group Name">
+    <input type="text" placeholder="Group Name" name="group_search" onkeydown="GoToGroupPage()">
     <button>New Group</button>
 </body>
 
