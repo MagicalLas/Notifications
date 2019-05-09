@@ -64,6 +64,25 @@
             return (arg) => f(arg).value;
         }
 
+        function CheckInviteKey(key) {
+            const url = INVITE_KEY_VAILD_CHECK_API_ENDPOINT + GROUP_NAME + "?invite_key=" + key;
+            const req = new XMLHttpRequest();
+            req.addEventListener("load", () => {
+                alert(req.responseText);
+                if (req.responseText == "success") {
+                    // Show Schedule
+                }
+            });
+            req.open("GET", url);
+            req.send(null);
+        }
+
+        function JoinGroup() {
+            if (event.keyCode == ENTER_KEY_CODE) {
+                CheckInviteKey(GetValue(FindName)("invite_key"));
+            }
+        }
+
         function ViewInviteForm() {
             element = FindClass("invite_form");
             element.style.animation = "slideIn";
@@ -87,6 +106,7 @@
         </div>
     </div>
     <div class="invite_form">
+        <input type="text" placeholder="Invite Key를 입력해주세요" onkeypress="JoinGroup()" name="invite_key">
     </div>
 </body>
 
