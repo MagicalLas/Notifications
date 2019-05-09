@@ -8,7 +8,7 @@
     <title>Notifications</title>
     <style>
         input {
-            border: 2px solid rgba(255, 255, 255, .5);
+            border: 2px solid rgba(255, 255, 255, .9);
             font-size: 1.75em;
             padding: .25em .5em .3125em;
             color: rgba(255, 255, 255, 0.904);
@@ -24,7 +24,7 @@
         }
 
         button {
-            border: 2px solid rgba(255, 255, 255, 0.089);
+            border: 2px solid rgba(255, 255, 255, 0.386);
             font-size: 1.75em;
             border-radius: .25em;
             color: rgba(255, 255, 255, 0.698);
@@ -58,19 +58,76 @@
             bottom: 0%;
             position: absolute;
 
+            animation-fill-mode: forwards;
             animation-play-state: paused;
             animation-duration: 2s;
             animation-name: slideOut;
         }
 
         @keyframes slideOut {
-            from {
+            0% {
                 bottom: 0%;
             }
 
-            to {
+            100% {
                 bottom: -30%;
             }
+        }
+
+        @keyframes slideIn {
+            0% {
+                bottom: -30%;
+            }
+
+            100% {
+                bottom: 0%;
+            }
+        }
+
+        .form_close_button {
+            border: 2px solid rgba(255, 255, 255, 0.527);
+            margin-left: -1em;
+            border-radius: 100%;
+            width: 2em;
+        }
+
+        .new_group_form {
+            left: 50%;
+            bottom: 0%;
+            position: absolute;
+
+            animation-fill-mode: forwards;
+            animation-play-state: paused;
+            animation-duration: 1s;
+            animation-name: slideInForm;
+        }
+
+        @keyframes slideOutForm {
+            0% {
+                bottom: 10%;
+            }
+
+            100% {
+                bottom: 100%;
+            }
+        }
+
+        @keyframes slideInForm {
+            0% {
+                bottom: 100%;
+            }
+
+            100% {
+                bottom: 10%;
+            }
+        }
+
+        .group_name {
+            bottom: 8em;
+        }
+
+        .group_invite_key {
+            bottom: 5em;
         }
     </style>
     <script>
@@ -99,17 +156,50 @@
         }
 
         function SlideOut(element) {
-            element.style.animationPlayState = "running";
+            element.style.animation = "slideOut";
+            element.style.animationDuration = "1s";
+            element.style.animationFillMode = "forwards";
+        }
+
+        function SlideIn(element) {
+            element.style.animation = "slideIn";
+            element.style.animationDuration = "0.7s";
+            element.style.animationFillMode = "forwards";
+        }
+
+        function FormSlideIn(element) {
+            element.style.animation = "slideInForm";
+            element.style.animationDuration = "1s";
+            element.style.animationFillMode = "forwards";
+        }
+        function FormSlideOut(element) {
+            element.style.animation = "slideOutForm";
+            element.style.animationDuration = "1s";
+            element.style.animationFillMode = "forwards";
         }
 
         function ChangeToNewGroupFormPage() {
-                SlideOut(FindClass("_pre_input_buttons"));
-                
-            }
+            SlideOut(FindClass("_pre_input_buttons"));
+            FormSlideIn(FindClass("new_group_form"));
+        }
+
+        function CloseNewGroupForm() {
+            SlideIn(FindClass("_pre_input_buttons"));
+            FormSlideOut(FindClass("new_group_form"));
+        }
+
     </script>
 </head>
 
 <body>
+    <div class="new_group_form">
+        <input type="text" placeholder="New Group Name" name="group_name" class="group_name"
+            onkeydown="GoToGroupPage()">
+        <input type="text" placeholder="Invite Key" name="group_invite_key" class="group_invite_key"
+            onkeydown="GoToGroupPage()">
+        <button class="form_close_button" onclick="CloseNewGroupForm()">X</button>
+    </div>
+
     <div class="_pre_input_buttons">
         <input type="text" placeholder="Group Name" name="group_search" onkeydown="GoToGroupPage()">
         <button onclick="ChangeToNewGroupFormPage()">New Group</button>
