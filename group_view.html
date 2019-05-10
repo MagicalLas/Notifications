@@ -45,7 +45,7 @@
             padding: .25em .5em .3125em;
             color: rgba(255, 130, 130, 0.904);
             border-radius: .25em;
-            background: rgba(129, 101, 250, 0.9);
+            background: rgba(214, 206, 250, 0.9);
             transition: all .100s;
             position: absolute;
             box-sizing: border-box;
@@ -96,12 +96,34 @@
                 top: -20%;
             }
         }
+
+        @keyframes slideOutCard {
+            0% {
+                top: 20%;
+            }
+
+            100% {
+                top: -90%;
+            }
+        }
+
+        @keyframes slideInCard {
+            0% {
+                top: -90%;
+            }
+
+            100% {
+                top: 20%;
+            }
+        }
+
     </style>
     <script>
         const ENTER_KEY_CODE = 13;
         const GROUP_NAME = location.href.substr(location.href.lastIndexOf('/') + 1);
         const INVITE_KEY_VAILD_CHECK_API_ENDPOINT = "/invite_key/";
         const RENDER_SCHEDULE_API_ENDPOINT = "/schedule/";
+        var _param = "";
 
         function FindName(name) {
             return document.getElementsByName(name)[0];
@@ -130,10 +152,11 @@
         }
 
         function RenderSchedule(param) {
+            _param = param;
             const url = RENDER_SCHEDULE_API_ENDPOINT + param;
             const req = new XMLHttpRequest();
             req.addEventListener("load", () => {
-                FindClass("invite_card").innerHTML = null;
+                CloseInviteCard();
                 FindClass("invite_form").innerHTML = null;
                 FindClass("schedule").innerHTML = req.responseText;
             });
@@ -143,6 +166,7 @@
 
         function JoinGroup() {
             if (event.keyCode == ENTER_KEY_CODE) {
+                CloseInviteCard();
                 CheckInviteKey(GetValue(FindName)("invite_key"));
             }
         }
@@ -155,6 +179,7 @@
         }
 
         function CreateNewScheduleFrom() {
+            CloseScheduleCard();
             const element = FindClass("schedule_form");
             element.style.animation = "slideIn";
             element.style.animationDuration = "1s";
@@ -168,11 +193,43 @@
             element.style.animationFillMode = "forwards";
         }
 
+        function CloseInviteCard() {
+            const element = FindClass("invite_card");
+            element.style.animation = "slideOutCard";
+            element.style.animationDuration = "1s";
+            element.style.animationFillMode = "forwards";
+        }
+
+        function CloseScheduleCard() {
+            const element = FindClass("schedule");
+            element.style.animation = "slideOutCard";
+            element.style.animationDuration = "1s";
+            element.style.animationFillMode = "forwards";
+        }
+
+        function ShowScheduleCard() {
+            const element = FindClass("schedule");
+            element.style.animation = "slideInCard";
+            element.style.animationDuration = "1s";
+            element.style.animationFillMode = "forwards";
+        }
+
         function CheckNewSchedule() {
             if (event.keyCode == ENTER_KEY_CODE) {
                 CreateNewSchedule();
             }
         }
+
+        function RerenderScheduleCard() {
+            const url = RENDER_SCHEDULE_API_ENDPOINT + _param;
+            const req = new XMLHttpRequest();
+            req.addEventListener("load", () => {
+                FindClass("schedule").innerHTML = req.responseText;
+            });
+            req.open("GET", url);
+            req.send(null);   
+        }
+
         function CreateNewSchedule() {
             title = FindName("title").value;
             desciption = FindName("description").value;
@@ -184,6 +241,8 @@
                 req.addEventListener("load", () => {
                     if (req.responseText == "success") {
                         CloseNewScheduleFrom();
+                        RerenderScheduleCard();
+                        ShowScheduleCard();
                         alert(req.responseText);
                     } else {
                         alert(req.responseText);
@@ -193,6 +252,7 @@
                 req.send(null);
             }
         }
+
         function IsVaildParameter(parameter1, parameter2) {
             return (parameter1 != "") & (parameter2 != "")
         }
