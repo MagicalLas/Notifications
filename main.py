@@ -18,6 +18,10 @@ def get_arg(arg_name):
     return dummy
 
 
+def get_group(group_name):
+    return GroupManager().find_group(group_name)
+
+
 aduit_flow = TypeMatcher(
     _type(Left) < - chain(lambda x: x.left if x.left else text("success")),
     _type(Right) < - chain(lambda x: text("failure")),
@@ -47,7 +51,7 @@ def group_page_handler(request, group):
 
 
 def group_handler(request, group):
-    flow = group & (lambda x: GroupManager().find_group(x)) & (
+    flow = group & get_group & (
         lambda x: x.invite_key) & (lambda x: (x == request.execute.raw_args['invite_key']))
     is_available_code = (flow & aduit_flow).execute
     print(is_available_code)
@@ -61,7 +65,7 @@ def group_handler(request, group):
 
 
 def invite_key_handler(request, group):
-    flow = group & (lambda x: GroupManager().find_group(x)) & (
+    flow = group & get_group & (
         lambda x: x.invite_key) & (lambda x: text("success" if x == request.execute.raw_args['invite_key'] else "failure"))
     return flow & aduit_flow
 
@@ -69,7 +73,7 @@ def invite_key_handler(request, group):
 def new_schedule_handler(request, group):
     title = request & get_arg('title')
     description = request & get_arg('description')
-    object_group = group & (lambda x: GroupManager().find_group(x))
+    object_group = group & get_group
     new_schedule = create_schedule(
         title, description, pure(datetime.datetime.now()))
     add_schedule_to_group = composer(lambda group, schedule:
