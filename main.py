@@ -18,6 +18,10 @@ def get_arg(arg_name):
     return dummy
 
 
+def get_group(group_name):
+    return GroupManager().find_group(group_name)
+
+
 aduit_flow = TypeMatcher(
     _type(Left) < - chain(lambda x: x.left if x.left else text("success")),
     _type(Right) < - chain(lambda x: text("failure")),
@@ -47,13 +51,16 @@ def group_page_handler(request, group):
 
 
 def group_handler(request, group):
-    flow = group & (lambda x: GroupManager().find_group(x)) & (
-        lambda x: x.invite_key) & (lambda x: (x == request.execute.raw_args['invite_key']))
+    flow = (group &
+            get_group &
+            (lambda x: x.invite_key) &
+            (lambda x: (x == request.execute.raw_args['invite_key'])))
     is_available_code = (flow & aduit_flow).execute
-    print(is_available_code)
     if is_available_code:
-        flow = group & (lambda x: GroupManager().find_group(x)) & (
-            lambda x: x.urgent_schedule) & (lambda x: text(x.rendered_html) if isinstance(x, Schedule) else text(x))
+        flow = (group &
+                (lambda x: GroupManager().find_group(x)) &
+                (lambda x: x.urgent_schedule) &
+                (lambda x: text(x.rendered_html) if isinstance(x, Schedule) else text(x)))
         result = flow.attempt()
         return result & aduit_flow
     else:
@@ -61,22 +68,22 @@ def group_handler(request, group):
 
 
 def invite_key_handler(request, group):
-    flow = group & (lambda x: GroupManager().find_group(x)) & (
-        lambda x: x.invite_key) & (lambda x: text("success" if x == request.execute.raw_args['invite_key'] else "failure"))
+    flow = (group &
+            get_group &
+            (lambda x: x.invite_key) &
+            (lambda x: "success" if x == request.execute.raw_args['invite_key'] else "failure") &
+            (lambda x: text(x)))
     return flow & aduit_flow
 
 
 def new_schedule_handler(request, group):
     title = request & get_arg('title')
     description = request & get_arg('description')
-    object_group = group & (lambda x: GroupManager().find_group(x))
     new_schedule = create_schedule(
         title, description, pure(datetime.datetime.now()))
-    add_schedule_to_group = composer(lambda group, schedule:
-                                     group.add_schedule(schedule)
-                                     )(object_group, new_schedule)
-    result = add_schedule_to_group.attempt() & aduit_flow
-    return result
+    object_group = group & get_group & (
+        lambda group: group.add_schedule(new_schedule.execute)).attempt() & aduit_flow
+    return object_group
 
 
 def new_group_handler(request):

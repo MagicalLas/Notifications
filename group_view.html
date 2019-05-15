@@ -39,6 +39,7 @@
             width: 30em;
             margin-left: -15em;
         }
+
         .dark {
             border: 2px solid rgba(0, 0, 0, 0.9);
             font-size: 1.75em;
@@ -54,12 +55,14 @@
             width: 30em;
             margin-left: -15em;
         }
+
         .invite_card {
             position: absolute;
             left: 50%;
             top: 20%;
             margin-left: -10rem;
         }
+
         .schedule {
             position: absolute;
             left: 50%;
@@ -67,7 +70,8 @@
             transform: translateX(-50%);
         }
 
-        .invite_form, .schedule_form {
+        .invite_form,
+        .schedule_form {
             position: absolute;
             left: 50%;
             top: -20%;
@@ -116,7 +120,6 @@
                 top: 20%;
             }
         }
-
     </style>
     <script>
         const ENTER_KEY_CODE = 13;
@@ -185,7 +188,7 @@
             element.style.animationDuration = "1s";
             element.style.animationFillMode = "forwards";
         }
-        
+
         function CloseNewScheduleFrom() {
             const element = FindClass("schedule_form");
             element.style.animation = "slideOut";
@@ -227,7 +230,7 @@
                 FindClass("schedule").innerHTML = req.responseText;
             });
             req.open("GET", url);
-            req.send(null);   
+            req.send(null);
         }
 
         function CreateNewSchedule() {
@@ -279,7 +282,8 @@
     </div>
     <div class="schedule_form">
         <input class="dark" type="text" placeholder="Title을 입력해주세요" onkeypress="CheckNewSchedule()" name="title">
-        <input class="dark" type="text" style="bottom: -2em" placeholder="Description을 입력해주세요" onkeypress="CheckNewSchedule()" name="description">
+        <input class="dark" type="text" style="bottom: -2em" placeholder="Description을 입력해주세요"
+            onkeypress="CheckNewSchedule()" name="description">
     </div>
 </body>
 
