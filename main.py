@@ -79,14 +79,11 @@ def invite_key_handler(request, group):
 def new_schedule_handler(request, group):
     title = request & get_arg('title')
     description = request & get_arg('description')
-    object_group = group & get_group
     new_schedule = create_schedule(
         title, description, pure(datetime.datetime.now()))
-    add_schedule_to_group = composer(lambda group, schedule:
-                                     group.add_schedule(schedule)
-                                     )(object_group, new_schedule)
-    result = add_schedule_to_group.attempt() & aduit_flow
-    return result
+    object_group = group & get_group & (
+        lambda group: group.add_schedule(new_schedule.execute)).attempt() & aduit_flow
+    return object_group
 
 
 def new_group_handler(request):
