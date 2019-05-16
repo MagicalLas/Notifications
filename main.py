@@ -96,12 +96,20 @@ def new_group_handler(request):
     return result
 
 
+def delete_schedule_handler(request, group):
+    object_group = (group &
+                    get_group &
+                    (lambda x: x.finish_schedule()))
+    return object_group.attempt() & aduit_flow
+
+
 @lazy
 def EffectApp():
     route('/', main_page_handler)
     route('/notice/<group>', group_page_handler)
     route('/schedule/<group>', group_handler)
     route('/new/schedule/<group>', new_schedule_handler)
+    route('/delete/schedule/<group>', delete_schedule_handler)
     route('/new/group', new_group_handler)
     route('/invite_key/<group>', invite_key_handler)
     app.run(host="0.0.0.0", port=8000)

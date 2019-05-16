@@ -17,6 +17,9 @@ class Group(object):
         except AttributeError:
             self._schedules = [schedule]
 
+    def finish_schedule(self):
+        del self._schedules[0]
+
     @property
     def name(self):
         return self._name
