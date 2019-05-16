@@ -90,8 +90,9 @@ def new_group_handler(request):
 
 
 def delete_schedule_handler(request, group):
-    object_group = group & (lambda x: GroupManager().find_group(x)) & (
-        lambda x: x.finish_schedule())
+    object_group = (group &
+                    get_group &
+                    (lambda x: x.finish_schedule()))
     return object_group.attempt() & aduit_flow
 
 
