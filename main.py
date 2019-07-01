@@ -82,8 +82,9 @@ def new_schedule_handler(request, group):
     new_schedule = create_schedule(
         title, description, pure(datetime.datetime.now()))
     object_group = (group & get_group & (
-        lambda group: group.add_schedule(new_schedule.execute))).attempt() & aduit_flow
-    return object_group
+        lambda group: group.add_schedule(new_schedule.execute)))
+    schedule = object_group.attempt() & aduit_flow
+    return schedule
 
 
 def new_group_handler(request):
