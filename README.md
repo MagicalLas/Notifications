@@ -10,7 +10,7 @@
 </a>
 </div>
 
-> this is sample image that is use **Notifications**   
+> this is main page that is  **Notifications**   
 
 <div align="center">
 <a href="https://github.com/Las-Wonho/Notifications">
@@ -44,9 +44,19 @@
 팀 프로젝트를 할 때 우리 팀의 마일스톤을 정하는 회의를 2일 뒤 하려 합니다  
 이때 웹 서비스에 일정을 정해둔다면, 누구든 다가오는 이 그룹의 `회의 일정`을 웹에서 빠르게 확인할 수 있습니다
 
-## Execution
+## + More
 
-### Run
+### Used
+
+1. **Docker** - publish
+2. **Python** - main server logic
+3. **sanic** - python library
+4. **nodeJS** - docker management
+5. **JavaScript** - page front
+6. **CSS** - page front design
+7. **HTML** - page front frame
+
+### Execution
 
 ```bash
 pip install sanic
