@@ -4,33 +4,18 @@
 </a>
 </div>
 
-<div align="center">
-<a href="https://github.com/Las-Wonho/Notifications">
-<img alt="image2" src="./Image/image01.png" width="1200" />
-</a>
-</div>
-
-> this is main page that is  **Notifications**   
-
-<div align="center">
-<a href="https://github.com/Las-Wonho/Notifications">
-<img alt="padding" src="./Image/padding.png" height="200" />
-</a>
-</div>
-
-<div align="center">
-<a href="https://github.com/Las-Wonho/Notifications">
-<img alt="image1" src="./Image/image02.png" width="1200" />
-</a>
-</div>
-
-
-
 # [Notifications](https://github.com/Las-Wonho/Notifications)
+
+
+<div align="center">
+<a href="https://github.com/Las-Wonho/Notifications">
+<img alt="padding" src="./Image/padding.png" height="20" />
+</a>
+</div>
 
 ## Introduce
 
->  그룹 내부에서 중요한 일정을 공유해주는 웹 서비스입니다
+그룹 내부에서 중요한 일정을 공유해주는 웹 서비스입니다
 
 ### Feature
 
@@ -44,7 +29,13 @@
 팀 프로젝트를 할 때 우리 팀의 마일스톤을 정하는 회의를 2일 뒤 하려 합니다  
 이때 웹 서비스에 일정을 정해둔다면, 누구든 다가오는 이 그룹의 `회의 일정`을 웹에서 빠르게 확인할 수 있습니다
 
-## + More
+<div align="center">
+<a href="https://github.com/Las-Wonho/Notifications">
+<img alt="padding" src="./Image/padding.png" height="50" />
+</a>
+</div>
+
+## More
 
 ### Used
 
@@ -63,7 +54,19 @@ pip install sanic
 python main.py
 ```
 
+### Images
 
+<div align="center">
+<a href="https://github.com/Las-Wonho/Notifications">
+<img alt="image2" src="./Image/image01.png" width="1200" />
+</a>
+</div>
+
+<div align="center">
+<a href="https://github.com/Las-Wonho/Notifications">
+<img alt="padding" src="./Image/padding.png" height="50" />
+</a>
+</div>
 
 ## Support Git History
 
