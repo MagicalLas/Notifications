@@ -14,13 +14,13 @@
 
 <div align="center">
 <a href="https://github.com/Las-Wonho/Notifications">
-<img alt="padding" src="./Image/padding.png" height="50" />
+<img alt="padding" src="./Image/padding.png" height="200" />
 </a>
 </div>
 
 <div align="center">
 <a href="https://github.com/Las-Wonho/Notifications">
-<img alt="image1" src="./Image/image02.png" width="600" />
+<img alt="image1" src="./Image/image02.png" width="1200" />
 </a>
 </div>
 
