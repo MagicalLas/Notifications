@@ -39,7 +39,7 @@
         }
 
         html {
-            background: #333 url(https://github.com/Las-Wonho/Notifications/raw/master/back.png) no-repeat center bottom;
+            background: #333 url(https://raw.githubusercontent.com/Las-Wonho/Notifications/master/back.png) no-repeat center bottom;
             background-size: cover;
         }
 
@@ -92,9 +92,28 @@
         }
 
         .new_group_form {
-            left: 50%;
+            left: 12.5%;
             bottom: 0%;
             position: absolute;
+			min-width: 75%;
+			min-height: 40%;
+			background-color: rgba(45, 45, 45, 0.7); 
+			border-radius: 25px;
+
+            animation-fill-mode: forwards;
+            animation-play-state: paused;
+            animation-duration: 1s;
+            animation-name: slideInForm;
+        }
+		
+        .info_form {
+            left: 12.5%;
+            right: 12.5%;
+            position: absolute;
+			min-width: 75%;
+			min-height: 75%;
+			background-color: rgba(45, 45, 45, 0.7); 
+			border-radius: 25px;
 
             animation-fill-mode: forwards;
             animation-play-state: paused;
@@ -194,10 +213,20 @@
             SlideOut(FindClass("_pre_input_buttons"));
             FormSlideIn(FindClass("new_group_form"));
         }
+		
+        function ChangeToInfoFormPage() {
+            SlideOut(FindClass("_pre_input_buttons"));
+            FormSlideIn(FindClass("info_form"));
+        }
 
         function CloseNewGroupForm() {
             SlideIn(FindClass("_pre_input_buttons"));
             FormSlideOut(FindClass("new_group_form"));
+        }
+		
+        function CloseInfoForm() {
+            SlideIn(FindClass("_pre_input_buttons"));
+            FormSlideOut(FindClass("info_form"));
         }
 
         function CheckFormSendEvent() {
@@ -238,10 +267,29 @@
             onkeydown="CheckFormSendEvent()">
         <button class="form_close_button" onclick="CloseNewGroupForm()">X</button>
     </div>
-
+	
+	<div class="info_form">
+		<div style="color: rgba(255, 255, 255, 0.698); margin:20px 20px 20px 20px;">
+			<h1><a id="Notifications_0"></a>Notifications</h1>
+			<hr>
+			<h1><a id="How_To_Use_This_0"></a>How To Use This</h1>
+			<p>우리는 마일스톤을 관리해주는 서비스입니다.</p>
+			<h2><a id="_4"></a>그룹</h2>
+			<p>그룹마다 마일스톤을 생성할 수 있습니다. 그룹의 마일스톤에 접근하기 위해서는 비밀Key를 설정해야 합니다.</p>
+			<h2><a id="_8"></a>스케줄</h2>
+			<p>스케줄은 그룹마다 하나만 보여집니다. 이 스케줄을 완료하면 다음에 완료할 스케줄을 볼 수 있습니다.</p>
+			<h2><a id="___12"></a>다른 그룹에 접근</h2>
+			<p>그 그룹의 비밀Key를 알고있다면 그 그룹의 스케줄을 볼수도 있고 추가할 수도 있습니다.</p>
+		</div>
+	<button class="form_close_button" onclick="CloseInfoForm()">X</button>
+    </div>
+	
     <div class="_pre_input_buttons">
         <input type="text" placeholder="이동하실 Group이름을 입력해주세요" name="group_search" onkeydown="GoToGroupPage()">
-        <button onclick="ChangeToNewGroupFormPage()">Create Group</button>
+        <div>
+			<button onclick="ChangeToNewGroupFormPage()" style="margin-left:-9em ">Create Group</button>
+			<button onclick="ChangeToInfoFormPage()" style="margin-left:1em ">How to use</button>
+		</div>
     </div>
 </body>
 
