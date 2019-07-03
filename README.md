@@ -1,6 +1,6 @@
 <div align="center">
 <a href="https://github.com/Las-Wonho/Notifications">
-<img alt="padding" src="./Image/padding.png" height="50" />
+<img alt="padding" src="./Image/padding.png" height="10" />
 </a>
 </div>
 
