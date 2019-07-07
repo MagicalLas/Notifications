@@ -148,6 +148,35 @@
         .group_invite_key {
             bottom: 5em;
         }
+        #mainlogo{
+            --widthA: 27em;
+            --widthB: 30em;
+            width: var(--widthA);
+            height: var(--widthB);
+            position: absolute;
+            left: calc(50% - calc(var(--widthA) /2));
+            top: calc(50% - calc(var(--widthB) /2));
+            animation: progress 5s 0s infinite forwards;
+            animation-timing-function: linear;
+        }
+        @keyframes progress {
+            0% {
+                transform: rotate3d(0,0,0,0);
+            }
+            25% {
+                transform: rotate3d(0,0,1, 0.005turn);
+            }
+            50% {
+                transform: rotate3d(0,0,0,0);
+            }
+            75% {
+                transform: rotate3d(0,0,1, -0.005turn);
+            }
+            100% {
+                transform: rotate3d(0,0,0,0);
+            }
+            
+        }
     </style>
     <script>
         const ENTER_KEY_CODE = 13;
@@ -266,6 +295,9 @@
         <input type="text" placeholder="Invite Key" name="group_invite_key" class="group_invite_key"
             onkeydown="CheckFormSendEvent()">
         <button class="form_close_button" onclick="CloseNewGroupForm()">X</button>
+    </div>
+    <div>
+        <img src="https://raw.githubusercontent.com/Las-Wonho/Notifications/e89bad5bb7a953b3243a52160513e01d9eec3ab3/logo.png" id="mainlogo">
     </div>
 	
 	<div class="info_form">
