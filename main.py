@@ -53,13 +53,13 @@ def group_page_handler(request, group):
 def group_handler(request, group):
     flow = (group &
             get_group &
-            (lambda x: x.invite_key) &
-            (lambda x: (x == request.execute.raw_args['invite_key'])))
+            (_.invite_key) &
+            (_ == request.execute.raw_args['invite_key']))
     is_available_code = (flow & aduit_flow).execute
     if is_available_code:
         flow = (group &
-                (lambda x: GroupManager().find_group(x)) &
-                (lambda x: x.urgent_schedule) &
+                ( GroupManager().find_group(_)) &
+                (_.urgent_schedule) &
                 (lambda x: text(x.rendered_html) if isinstance(x, Schedule) else text(x)))
         result = flow.attempt()
         return result & aduit_flow
@@ -70,9 +70,9 @@ def group_handler(request, group):
 def invite_key_handler(request, group):
     flow = (group &
             get_group &
-            (lambda x: x.invite_key) &
+            (_.invite_key) &
             (lambda x: "success" if x == request.execute.raw_args['invite_key'] else "failure") &
-            (lambda x: text(x)))
+            (text(_)))
     return flow & aduit_flow
 
 
